@@ -438,7 +438,6 @@ public class JacobExcelTool {
 		Dispatch.call(sheet, "Activate");// 指定活动sheet
 		Dispatch.call(sheet, "Select");
 		int excelToPdf = 57;
-		//
 		Dispatch.invoke(excel, "SaveAs", Dispatch.Method,
 				new Object[] { outFile, new Variant(excelToPdf), new Variant(true), new Variant(excelToPdf),
 						new Variant(excelToPdf), new Variant(true), new Variant(true), new Variant(excelToPdf),

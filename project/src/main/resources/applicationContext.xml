@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:task="http://www.springframework.org/schema/task"
+	   xmlns:mongo="http://www.springframework.org/schema/data/mongo"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xsi:schemaLocation="
+		http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+		http://www.springframework.org/schema/aop 
+        http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+         http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.0.xsd
+        http://www.springframework.org/schema/data/mongo http://www.springframework.org/schema/data/mongo/spring-mongo-1.5.xsd
+        http://www.springframework.org/schema/tx 
+			http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+
+	<!-- 允许注释配置 -->
+	<context:annotation-config />
+
+	<!-- 通过在classpath自动扫描方式把组件纳入Spring容器中管理 -->
+	<!-- 扫描com.heysound package 以及子包 -->
+	<!-- 	<context:component-scan base-package="com.heysound" /> -->
+	<!-- 防止加载两次 -->
+	<context:component-scan base-package="com.heysound">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+	</context:component-scan>
+
+	<!-- 使用注释进行事务配置 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+
+	<!-- Spring读取的属性文件 -->
+	<context:property-placeholder
+			ignore-resource-not-found="true" location="classpath*:config/config.properties" />
+
+	<!-- Declare a datasource that has pooling capabilities -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		  destroy-method="close" p:driverClass="${app.jdbc.driverClassName}"
+		  p:jdbcUrl="${app.jdbc.url}" p:user="${app.jdbc.username}" p:password="${app.jdbc.password}"
+		  p:acquireIncrement="10" p:idleConnectionTestPeriod="600" p:acquireRetryDelay="10"
+		  p:initialPoolSize="3" p:minPoolSize="3" p:maxPoolSize="100" p:maxIdleTime="60" />
+
+	<!-- transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager"
+		  class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- MyBatis sqlSessionFactory 配置，id必须是 sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations"
+				  value="classpath*:com/heysound/mapper/*Mapper.xml" />
+	</bean>
+
+	<!-- 在com.bxads.cms.core.internal.mapper包下进行扫描，进行自动配置Mapper代理(相当于DAO的实现) 
+		，并注册到Spring ApplicationContext中 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.heysound.mapper" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
+	</bean>
+
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="52428800"/>
+	</bean>
+
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxTotal" value="${redis.active}"/>  <!--控制一个pool可分配多少个jedis实例-->
+		<property name="maxIdle" value="${redis.idle}" />   <!--控制一个pool最多有多少个状态为idle(空闲)的jedis实例 -->
+		<property name="maxWaitMillis" value="${redis.wait}" />  <!--表示当borrow一个jedis实例时，最大的等待时间，如果超过等待时间，则直接抛出JedisConnectionException-->
+		<property name="testOnBorrow" value="true" /> <!--在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的-->
+	</bean>
+
+
+	<!--        redis的连接池pool，不是必选项：timeout/password     -->
+	<bean id = "jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg index="0" ref="jedisPoolConfig"/>
+		<constructor-arg index="1" value="${redis.server}"/>
+		<constructor-arg index="2" value="${redis.port}" type="int"/>
+		<constructor-arg index="3" value="${redis.timeout}" type="int"/>
+		<constructor-arg index="4" value="${redis.password}"/>
+	</bean>
+
+	<bean id="defaultBceCredentials" class="com.baidubce.auth.DefaultBceCredentials">
+		<constructor-arg>
+			<value>${baidu.key}</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>${baidu.secret}</value>
+		</constructor-arg>
+	</bean>
+	<bean id="bceClientConfiguration" class="com.baidubce.BceClientConfiguration">
+		<property name="credentials" ref="defaultBceCredentials"></property>
+	</bean>
+
+	<bean id="bosClientConfiguration" class="com.baidubce.services.bos.BosClientConfiguration">
+		<property name="endpoint" value="${baidu.origin.target.path}"/>
+		<property name="credentials" ref="defaultBceCredentials"/>
+	</bean>
+
+	<bean id="jPushClient" class="cn.jpush.api.JPushClient">
+		<constructor-arg>
+			<value>${JPush.secret}</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>${JPush.AppKey}</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="umengIOSUnicast" class="com.heysound.service.push.ios.IOSUnicast">
+		<constructor-arg>
+			<value>${ios.app.key}</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>${ios.appMasterSecret.key}</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<constructor-arg name="mongoDbFactory" ref="mongoDbFactory"/>
+	</bean>
+
+	<mongo:mongo id="mongo" host="${mongo.host}" port="${mongo.pport}">
+		<mongo:options
+				connections-per-host="${mongo.connectionsPerHost}"
+				threads-allowed-to-block-for-connection-multiplier="${mongo.threadsAllowedToBlockForConnectionMultiplier}"
+				connect-timeout="${mongo.connectTimeout}"
+				max-wait-time="${mongo.maxWaitTime}"
+				auto-connect-retry="${mongo.autoConnectRetry}"
+				socket-keep-alive="${mongo.socketKeepAlive}"
+				socket-timeout="${mongo.socketTimeout}"
+				write-number="1"
+				write-timeout="0"
+				write-fsync="true"
+				/>
+
+	</mongo:mongo>
+
+	<mongo:db-factory dbname="hsy" mongo-ref="mongo" id="mongoDbFactory" username="${mongo.username}" password="${mongo.password}"/>
+	<!-- username="${mongo.username}" password="${mongo.password}" -->
+
+	<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+		<property name="extractValueFromSingleKeyModel" value="true" />
+	</bean>
+
+	<bean id="ossClient" class="com.aliyun.oss.OSSClient">
+		<constructor-arg>
+			<value>${oss.endpoint}</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>${aliyun.access_id}</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>${aliyun.access_key}</value>
+		</constructor-arg>
+	</bean>
+
+	<!--<task:scheduled-tasks>-->
+		<!--<task:scheduled ref="taskJob" method="synchStatistic" cron="0 0 0 * * ?"/>-->
+		<!--<task:scheduled ref="taskJob" method="updateTrans" cron="0 0/10 * * * ?"/>-->
+		<!--&lt;!&ndash;<task:scheduled ref="taskJob" method="job2" cron="* * * * * ?"/>&ndash;&gt;-->
+	<!--</task:scheduled-tasks>-->
+
+	<bean id="taskJob" class="com.heysound.service.Timer.TaskJob"></bean>
+	<!-- 定时将缓存的弹幕消息持久化 -->
+	<!--<task:scheduler id="flushVideoMsg" pool-size="5" />-->
+	<!--<task:scheduled-tasks scheduler="flushVideoMsg">-->
+		<!--<task:scheduled ref="taskJob" method="flushVideoMsg" fixed-rate="5000" />-->
+		<!--<task:scheduled ref="taskJob" method="flushVideoMsg" fixed-rate="5000" />-->
+		<!--<task:scheduled ref="taskJob" method="flushVideoMsg" fixed-rate="5000" />-->
+		<!--<task:scheduled ref="taskJob" method="flushVideoMsg" fixed-rate="5000" />-->
+		<!--<task:scheduled ref="taskJob" method="flushVideoMsg" fixed-rate="5000" />-->
+	<!--</task:scheduled-tasks>-->
+
+	<bean id="weixinpub" class="com.belerweb.social.weixin.api.Weixin">
+		<constructor-arg name="appId">
+			<value type="java.lang.String">${wechat.public.appid}</value>
+		</constructor-arg>
+		<constructor-arg name="secret">
+			<value type="java.lang.String">${wechat.public.secret}</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="weixinweb" class="com.belerweb.social.weixin.api.Weixin">
+		<constructor-arg name="appId">
+			<value type="java.lang.String">${wechat.web.appid}</value>
+		</constructor-arg>
+		<constructor-arg name="secret">
+			<value type="java.lang.String">${wechat.web.secret}</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="weibo" class="com.belerweb.social.weibo.api.Weibo">
+		<constructor-arg name="clientId">
+			<value type="java.lang.String">${weibo.AppKey}</value>
+		</constructor-arg>
+		<constructor-arg name="clientSecret">
+			<value type="java.lang.String">${weibo.AppSecret}</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="qq" class="com.belerweb.social.qq.connect.api.QQConnect">
+		<constructor-arg name="clientId">
+			<value type="java.lang.String">${qq.clientID}</value>
+		</constructor-arg>
+		<constructor-arg name="clientSecret">
+			<value type="java.lang.String">${qq.clientSecret}</value>
+		</constructor-arg>
+	</bean>
+</beans>

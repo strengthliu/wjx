@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+	<classPathEntry
+		location="/Users/qiang/.m2/repository/mysql/mysql-connector-java/5.1.21/mysql-connector-java-5.1.21.jar" />
+
+	<context id="Mysql2Tables" targetRuntime="MyBatis3">
+		<!-- 这里引入扩展插件 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+			<property name="suppressDate" value="true" />
+		</commentGenerator>
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://127.0.0.1:3306/songmeiV8" userId="root"
+			password="jjk010dbliuqiang">
+			<!-- userId="zhaocan" -->
+			<!-- password="zhaocan"> -->
+		</jdbcConnection>
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+
+		<!-- targetProject:自动生成代码的位置 -->
+		<javaModelGenerator targetPackage="com.ccwihr_server.domain"
+			targetProject="src/main/java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<sqlMapGenerator targetPackage="com.ccwihr_server.mapper"
+			targetProject="src/main/resources">
+		</sqlMapGenerator>
+
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.ccwihr_server.mapper" targetProject="src/main/java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+
+<!-- 
+		<table schema="clocks" tableName="clocks" domainObjectName="Clocks"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+		</table>
+		<table schema="departs" tableName="departs" domainObjectName="Departs"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+		</table>
+		<table schema="employee" tableName="employee" domainObjectName="Employee"
+			enableCountByExample="false" enableUpdateByExample="false"
+			enableDeleteByExample="false" enableSelectByExample="false"
+			selectByExampleQueryId="false">
+		</table>
+		<table schema="mealrecords" tableName="mealrecords"
+			domainObjectName="MealRecords" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+		<table schema="timerecords" tableName="timerecords"
+			domainObjectName="TimeRecords" enableCountByExample="false"
+			enableUpdateByExample="false" enableDeleteByExample="false"
+			enableSelectByExample="false" selectByExampleQueryId="false">
+		</table>
+
+ -->	
+ 	</context>
+</generatorConfiguration>

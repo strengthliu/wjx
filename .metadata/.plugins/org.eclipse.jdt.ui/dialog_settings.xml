@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
-	<item value="D:\wjx\jacob-1.19" key="org.eclipse.jdt.ui.lastextjar"/>
+	<item value="D:\wjx\poi-4.1.0" key="org.eclipse.jdt.ui.lastextjar"/>
 	<item value="D:\Work\项目\wjx\jacob-1.19" key="org.eclipse.jdt.ui.last.external.project"/>
 	<section name="org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart">
 		<item value="2" key="layout"/>
@@ -22,7 +22,7 @@
 	<section name="quick_assist_proposal_size">
 	</section>
 	<section name="BuildPathsPropertyPage">
-		<item value="0" key="pageIndex"/>
+		<item value="2" key="pageIndex"/>
 	</section>
 	<section name="completion_proposal_size">
 	</section>

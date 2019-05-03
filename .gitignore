@@ -1,2 +1,7 @@
 demo1/bin/
 .metadata/
+project/.settings/
+project/.classpath
+project/.project
+project/target/
+Servers/

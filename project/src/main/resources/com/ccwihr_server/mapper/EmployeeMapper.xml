@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ccwihr_server.mapper.EmployeeMapper" >
+  <resultMap id="BaseResultMap" type="com.ccwihr_server.domain.Employee" >
+    <id column="emp_id" property="empId" jdbcType="VARCHAR" />
+    <result column="card_id" property="cardId" jdbcType="VARCHAR" />
+    <result column="emp_fname" property="empFname" jdbcType="VARCHAR" />
+    <result column="depart_id" property="departId" jdbcType="VARCHAR" />
+    <result column="native_id" property="nativeId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    emp_id, card_id, emp_fname, depart_id, native_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Employee
+    where emp_id = #{empId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from Employee
+    where emp_id = #{empId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ccwihr_server.domain.Employee" >
+    insert into Employee (emp_id, card_id, emp_fname, 
+      depart_id, native_id)
+    values (#{empId,jdbcType=VARCHAR}, #{cardId,jdbcType=VARCHAR}, #{empFname,jdbcType=VARCHAR}, 
+      #{departId,jdbcType=VARCHAR}, #{nativeId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ccwihr_server.domain.Employee" >
+    insert into Employee
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="empId != null" >
+        emp_id,
+      </if>
+      <if test="cardId != null" >
+        card_id,
+      </if>
+      <if test="empFname != null" >
+        emp_fname,
+      </if>
+      <if test="departId != null" >
+        depart_id,
+      </if>
+      <if test="nativeId != null" >
+        native_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="empId != null" >
+        #{empId,jdbcType=VARCHAR},
+      </if>
+      <if test="cardId != null" >
+        #{cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="empFname != null" >
+        #{empFname,jdbcType=VARCHAR},
+      </if>
+      <if test="departId != null" >
+        #{departId,jdbcType=VARCHAR},
+      </if>
+      <if test="nativeId != null" >
+        #{nativeId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ccwihr_server.domain.Employee" >
+    update Employee
+    <set >
+      <if test="cardId != null" >
+        card_id = #{cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="empFname != null" >
+        emp_fname = #{empFname,jdbcType=VARCHAR},
+      </if>
+      <if test="departId != null" >
+        depart_id = #{departId,jdbcType=VARCHAR},
+      </if>
+      <if test="nativeId != null" >
+        native_id = #{nativeId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where emp_id = #{empId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ccwihr_server.domain.Employee" >
+    update Employee
+    set card_id = #{cardId,jdbcType=VARCHAR},
+      emp_fname = #{empFname,jdbcType=VARCHAR},
+      depart_id = #{departId,jdbcType=VARCHAR},
+      native_id = #{nativeId,jdbcType=VARCHAR}
+    where emp_id = #{empId,jdbcType=VARCHAR}
+  </update>
+</mapper>

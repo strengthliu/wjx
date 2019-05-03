@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ccwihr_server.mapper.MealRecordsMapper" >
+  <resultMap id="BaseResultMap" type="com.ccwihr_server.domain.MealRecords" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="clock_id" property="clockId" jdbcType="INTEGER" />
+    <result column="emp_id" property="empId" jdbcType="VARCHAR" />
+    <result column="card_id" property="cardId" jdbcType="VARCHAR" />
+    <result column="sign_time" property="signTime" jdbcType="TIMESTAMP" />
+    <result column="mark" property="mark" jdbcType="TINYINT" />
+    <result column="flag" property="flag" jdbcType="TINYINT" />
+    <result column="get_time" property="getTime" jdbcType="TIMESTAMP" />
+    <result column="mealtype" property="mealtype" jdbcType="SMALLINT" />
+    <result column="kind" property="kind" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, clock_id, emp_id, card_id, sign_time, mark, flag, get_time, mealtype, kind
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from MealRecords
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from MealRecords
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ccwihr_server.domain.MealRecords" >
+    insert into MealRecords (ID, clock_id, emp_id, 
+      card_id, sign_time, mark, 
+      flag, get_time, mealtype, 
+      kind)
+    values (#{id,jdbcType=INTEGER}, #{clockId,jdbcType=INTEGER}, #{empId,jdbcType=VARCHAR}, 
+      #{cardId,jdbcType=VARCHAR}, #{signTime,jdbcType=TIMESTAMP}, #{mark,jdbcType=TINYINT}, 
+      #{flag,jdbcType=TINYINT}, #{getTime,jdbcType=TIMESTAMP}, #{mealtype,jdbcType=SMALLINT}, 
+      #{kind,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ccwihr_server.domain.MealRecords" >
+    insert into MealRecords
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="clockId != null" >
+        clock_id,
+      </if>
+      <if test="empId != null" >
+        emp_id,
+      </if>
+      <if test="cardId != null" >
+        card_id,
+      </if>
+      <if test="signTime != null" >
+        sign_time,
+      </if>
+      <if test="mark != null" >
+        mark,
+      </if>
+      <if test="flag != null" >
+        flag,
+      </if>
+      <if test="getTime != null" >
+        get_time,
+      </if>
+      <if test="mealtype != null" >
+        mealtype,
+      </if>
+      <if test="kind != null" >
+        kind,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="clockId != null" >
+        #{clockId,jdbcType=INTEGER},
+      </if>
+      <if test="empId != null" >
+        #{empId,jdbcType=VARCHAR},
+      </if>
+      <if test="cardId != null" >
+        #{cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="signTime != null" >
+        #{signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mark != null" >
+        #{mark,jdbcType=TINYINT},
+      </if>
+      <if test="flag != null" >
+        #{flag,jdbcType=TINYINT},
+      </if>
+      <if test="getTime != null" >
+        #{getTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mealtype != null" >
+        #{mealtype,jdbcType=SMALLINT},
+      </if>
+      <if test="kind != null" >
+        #{kind,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ccwihr_server.domain.MealRecords" >
+    update MealRecords
+    <set >
+      <if test="clockId != null" >
+        clock_id = #{clockId,jdbcType=INTEGER},
+      </if>
+      <if test="empId != null" >
+        emp_id = #{empId,jdbcType=VARCHAR},
+      </if>
+      <if test="cardId != null" >
+        card_id = #{cardId,jdbcType=VARCHAR},
+      </if>
+      <if test="signTime != null" >
+        sign_time = #{signTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mark != null" >
+        mark = #{mark,jdbcType=TINYINT},
+      </if>
+      <if test="flag != null" >
+        flag = #{flag,jdbcType=TINYINT},
+      </if>
+      <if test="getTime != null" >
+        get_time = #{getTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mealtype != null" >
+        mealtype = #{mealtype,jdbcType=SMALLINT},
+      </if>
+      <if test="kind != null" >
+        kind = #{kind,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ccwihr_server.domain.MealRecords" >
+    update MealRecords
+    set clock_id = #{clockId,jdbcType=INTEGER},
+      emp_id = #{empId,jdbcType=VARCHAR},
+      card_id = #{cardId,jdbcType=VARCHAR},
+      sign_time = #{signTime,jdbcType=TIMESTAMP},
+      mark = #{mark,jdbcType=TINYINT},
+      flag = #{flag,jdbcType=TINYINT},
+      get_time = #{getTime,jdbcType=TIMESTAMP},
+      mealtype = #{mealtype,jdbcType=SMALLINT},
+      kind = #{kind,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

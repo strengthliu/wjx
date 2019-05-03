@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script>
+/* 	var userName;
+	var passWord; */
+	
+	/*
+	 * ================== 初始化 ==========================
+	 * 1、网络初始化。
+	 * ================================================
+	 */
+	var xmlHttpRequest;
+	function createXmlHttpRequest() {
+		if(xmlHttpRequest==null || xmlHttpRequest==undefined){}
+			if (window.ActiveXObject) { //如果是IE  
+				return new ActiveXObject("Microsoft.XMLHTTP");
+			} else if (window.XMLHttpRequest) { //非IE浏览器     
+				return new XMLHttpRequest();
+			}
+		}
+	}
+	/*
+	 * ================== 初始化 ==========================
+	 * 2、缓存数据初始化。
+	 * ================================================
+	 */
+	var store = new Array();
+	/* store[0] = {
+ 			id = 8;
+			name = 'fdsa';
+			count = 103;
+			marqueeText="";
+	}; */
+	
+	/*
+	 * ================================================
+	 *                     更新XXX数据
+	 */
+	var ind=100;
+	function onLogin() {
+		//alert();
+		ind = ind + 1;
+		var url = "./get/get/data?status="+ind;//+document.getElementById("cqrs").value;
+		//1.创建XMLHttpRequest组建     
+		xmlHttpRequest = createXmlHttpRequest();
+
+		//2.设置回调函数     
+		xmlHttpRequest.onreadystatechange = HuiDiaoFun;
+
+		//3.初始化XMLHttpRequest组建     
+		xmlHttpRequest.open("get", url, true);
+
+		//alert(url);
+		//4.发送请求     
+		xmlHttpRequest.send(100);
+	}
+	
+	/*
+	 * 回调函数   
+	 */
+	function HuiDiaoFun() {
+		if (xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200) {
+			var b = xmlHttpRequest.responseText;
+			var obj = eval('(' + b + ')');
+			//alert(b);  
+			document.getElementById("cqrs").innerHTML = b;
+			
+			//===========================
+			var myDate = new Date();
+			
+			//document.getElementById("timecq").innerHTML = myDate.toLocaleString( );  
+			
+			return b;
+
+		}
+	}
+	/*                  更新数据结束
+	 * ================================================
+	 */
+	
+	/*
+	 * ================================================
+	 *                  页面刷新
+	 */
+	var i = 1;
+	/*
+	 * 每秒刷新： 1、时间读秒
+	 */
+	function change() {
+		// 确保连接OK。
+		createXmlHttpRequest();
+		// 调用服务，更新数据store。
+		onLogin();
+		/* // 取回调结果
+		var b = HuiDiaoFun(); */
+		//document.getElementById("tabs").style.background="url('pil"+i+".jpg')";
+		
+		for (i=0;i<store.length;i++)
+		{
+			var item = store[0];
+			var doc = document.getElementById(item.id);
+			
+			doc.innerHTML = "";
+		}
+		
+		i++;
+		if (i > 5) {
+			document.getElementById("cqmq").innerHTML = 'fdsajkkldfsal;';  
+			i = 1;
+		}
+		setTimeout("change();", "1000");
+	}
+	
+</script>
+</head>
+<body onLoad="change();">
+	<div name='厂区'>
+		<div>
+			<span> 厂区 当前人数： <b id="cqrs">102</b> 人
+			</span> <span><b id='timecq'></b></span>
+		</div>
+		<div class="marquee">
+			<marquee id='cqmq' behavior="scroll" direction="left"
+				scrollamount="5"> 魂牵梦萦 </marquee>
+		</div>
+	</div>
+
+	<div></div>
+	<div></div>
+</body>
+</html>

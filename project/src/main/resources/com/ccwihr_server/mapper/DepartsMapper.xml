@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ccwihr_server.mapper.DepartsMapper" >
+  <resultMap id="BaseResultMap" type="com.ccwihr_server.domain.Departs" >
+    <id column="depart_id" property="departId" jdbcType="VARCHAR" />
+    <result column="depart_name" property="departName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    depart_id, depart_name
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from Departs
+    where depart_id = #{departId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from Departs
+    where depart_id = #{departId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.ccwihr_server.domain.Departs" >
+    insert into Departs (depart_id, depart_name)
+    values (#{departId,jdbcType=VARCHAR}, #{departName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ccwihr_server.domain.Departs" >
+    insert into Departs
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="departId != null" >
+        depart_id,
+      </if>
+      <if test="departName != null" >
+        depart_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="departId != null" >
+        #{departId,jdbcType=VARCHAR},
+      </if>
+      <if test="departName != null" >
+        #{departName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ccwihr_server.domain.Departs" >
+    update Departs
+    <set >
+      <if test="departName != null" >
+        depart_name = #{departName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where depart_id = #{departId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ccwihr_server.domain.Departs" >
+    update Departs
+    set depart_name = #{departName,jdbcType=VARCHAR}
+    where depart_id = #{departId,jdbcType=VARCHAR}
+  </update>
+</mapper>

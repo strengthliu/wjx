@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="./js/jquery-3.2.1.min.js"></script>
+<script>
+/* 	var userName;
+	var passWord; */
+	
+	/*
+	 * ================== 初始化 ==========================
+	 * 1、网络初始化。
+	 * ================================================
+	 */
+/* 	var xmlHttpRequest;
+	function createXmlHttpRequest() {
+		if(xmlHttpRequest==null || xmlHttpRequest==undefined){
+			if (window.ActiveXObject) { //如果是IE  
+				return new ActiveXObject("Microsoft.XMLHTTP");
+			} else if (window.XMLHttpRequest) { //非IE浏览器     
+				return new XMLHttpRequest();
+			}
+		}
+	}
+ */	
+ 
+ 	/*
+	 * ================== 初始化 ==========================
+	 * 2、缓存数据初始化。
+	 * ================================================
+	 */
+	var store = new Array();
+	/* store[0] = {
+ 			id = d8;
+			name = 'fdsa';
+			count = 103;
+			marqueeText="fdsafdsafdsfdsafdsafdsa";
+	}; */ 
+	
+	/*
+	 * ================================================
+	 *                     更新XXX数据
+	 */
+	function onLogin() {
+	    var deferred = $.ajax({
+	        type       : 'GET',
+	        headers :{"accept":"application/json"},
+		    url:"./get/get/checkInfo",
+	        /* contentType: 'application/json', */
+		    data:{},   
+	        dataType   : 'json',
+	        cache      : false,
+
+	        success    : function(_data) {
+	          if ('error' in _data) {
+	            errorCb(_data.error);
+	          } else {
+	        	  /* alert(_data.toString()); */
+	        	  HuiDiaoFun(_data.data);
+	          }
+	        },
+
+	        // JSON-RPC Server could return non-200 on error
+	        error    : function(jqXHR, textStatus, errorThrown) {
+	          try {
+	        	  alert(textStatus);
+	        	  alert("errText: "+jqXHR.responseText);
+	            var response = self.JSON.parse(jqXHR.responseText);
+	            if ('console' in window) { console.log(response); }
+
+	            errorCb(response.error);
+	          }
+	          catch (err) {
+	            // Perhaps the responseText wasn't really a jsonrpc-error.
+	            errorCb({error: jqXHR.responseText});
+	          }
+	        }
+	      });
+
+	
+	}
+	/*
+	 * 失败回调
+	 */
+	function errorCb(errorMessage){
+		alert(errorMessage);
+	}
+	/*
+	 * 回调函数   
+	 */
+	function HuiDiaoFun(data) {
+			store = eval(data);
+			/* alert(" s"+store[0].name); */
+			
+			// 更新store
+			/* return b; */
+	}
+	/*                  更新数据结束
+	 * ================================================
+	 */
+	
+	/*
+	 * ================================================
+	 *                  页面刷新
+	 */
+	 var _i=0;
+	/*
+	 * 每秒刷新： 1、时间读秒
+	 */
+	function change() {
+		//alert(_i);
+		// 5秒更新一次数据
+		_i = _i+1;
+		if(_i>5) {
+			_i=0;
+			// 调用服务，更新数据store。
+			onLogin();
+		}
+		
+		for (i=0;i<store.length;i++)
+		{
+			var item = store[0];
+			var doc = document.getElementById(item.id);
+				// 如果找到了节点，就更新
+			if(doc != undefined){
+				doc = document.getElementById('rs'+item.id);
+				doc.innerHTML = item.count;
+				doc = document.getElementById('time'+item.id);
+				var myDate = new Date();
+				doc.innerHTML = myDate.toLocaleString();
+				/* alert("update time:"+myDate.toLocaleString()); */
+				doc = document.getElementById('marquee'+item.id);
+				doc.innerHTML = item.marqueeText;
+			} 
+			else {// 否则新建这个节点。
+				var _htm = "";
+				//	     <div id='calllajjfks' name='厂区厂区厂区厂区'>
+				_htm += "<div id='"+item.id+"' name='"+item.name+"'>";
+				_htm += "	<div>";
+				_htm += "		<span> "+item.name+" 当前人数： <b id=rs"+item.id+">"+item.count+"</b> 人 </span>";
+				var myDate = new Date();
+				_htm += "		<span><b id='time"+item.id+"'>"+myDate.toLocaleString()+"</b></span>";
+				_htm += "	</div>";
+				_htm += "	<div  class='marquee'>";
+				_htm += "		<marquee id='marquee"+item.id+"' behavior='scroll' direction='left' scrollamount='5'>";
+				_htm += "           "+item.marqueeText+" </marquee>";
+				_htm += "	</div>";
+				_htm += "</div>";
+
+				/* alert(_htm); */
+				doc = document.createElement('div');
+				doc.innerHTML = _htm;
+				document.getElementsByTagName('body')[0].appendChild(doc);
+			}
+		}
+		// 设置刷新时间
+		setTimeout("change();", "1000");
+	}
+	
+	
+</script>
+</head>
+<body onLoad="change();">
+</body>
+</html>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ccwihr_server.mapper.ClocksMapper" >
+  <resultMap id="BaseResultMap" type="com.ccwihr_server.domain.Clocks" >
+    <id column="Clock_id" property="clockId" jdbcType="INTEGER" />
+    <result column="Clock_name" property="clockName" jdbcType="VARCHAR" />
+    <result column="Clock_type" property="clockType" jdbcType="VARCHAR" />
+    <result column="Area_id" property="areaId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    Clock_id, Clock_name, Clock_type, Area_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from Clocks
+    where Clock_id = #{clockId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from Clocks
+    where Clock_id = #{clockId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ccwihr_server.domain.Clocks" >
+    insert into Clocks (Clock_id, Clock_name, Clock_type, 
+      Area_id)
+    values (#{clockId,jdbcType=INTEGER}, #{clockName,jdbcType=VARCHAR}, #{clockType,jdbcType=VARCHAR}, 
+      #{areaId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ccwihr_server.domain.Clocks" >
+    insert into Clocks
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="clockId != null" >
+        Clock_id,
+      </if>
+      <if test="clockName != null" >
+        Clock_name,
+      </if>
+      <if test="clockType != null" >
+        Clock_type,
+      </if>
+      <if test="areaId != null" >
+        Area_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="clockId != null" >
+        #{clockId,jdbcType=INTEGER},
+      </if>
+      <if test="clockName != null" >
+        #{clockName,jdbcType=VARCHAR},
+      </if>
+      <if test="clockType != null" >
+        #{clockType,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        #{areaId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ccwihr_server.domain.Clocks" >
+    update Clocks
+    <set >
+      <if test="clockName != null" >
+        Clock_name = #{clockName,jdbcType=VARCHAR},
+      </if>
+      <if test="clockType != null" >
+        Clock_type = #{clockType,jdbcType=VARCHAR},
+      </if>
+      <if test="areaId != null" >
+        Area_id = #{areaId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where Clock_id = #{clockId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ccwihr_server.domain.Clocks" >
+    update Clocks
+    set Clock_name = #{clockName,jdbcType=VARCHAR},
+      Clock_type = #{clockType,jdbcType=VARCHAR},
+      Area_id = #{areaId,jdbcType=VARCHAR}
+    where Clock_id = #{clockId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -41,23 +41,23 @@ public class T1 {
 //
 ////        if (HSSFCell.CELL_TYPE_FORMULA == cellS.getCellType()) 
 ////        {
-//		     //È¡µÃ¹«Ê½µ¥Ôª¸ñµÄ¹«Ê½,ÖØĞÂÉèÖÃ
+//		     //å–å¾—å…¬å¼å•å…ƒæ ¼çš„å…¬å¼,é‡æ–°è®¾ç½®
 //			 cellS.setCellFormula(cellS.getCellFormula());
 //			 System.out.println(cellS.getNumericCellValue());
 ////		 }else {
-////			 cellS.setCellValue(value+"");// ¸øµ¥Ôª¸ñ¸³StringÖµ
+////			 cellS.setCellValue(value+"");// ç»™å•å…ƒæ ¼èµ‹Stringå€¼
 ////		 }
 		
-        //Ğ´ÈëÎÄ¼ş£¬Î´¹Ø±Õ
+        //å†™å…¥æ–‡ä»¶ï¼Œæœªå…³é—­
 		wb.write(fileOut);
 		
 		// TODO Auto-generated method stub
 		JacobExcelTool tool = new JacobExcelTool();
-		//´ò¿ª
+		//æ‰“å¼€
 		tool.OpenExcel("D:\\wjx\\demo1\\t1.xls",true,false);
-		//µ÷ÓÃExcelºê
+		//è°ƒç”¨Excelå®
 		tool.callMacro("VBATest");
-		//¹Ø±Õ²¢±£´æ£¬ÊÍ·Å¶ÔÏó
+		//å…³é—­å¹¶ä¿å­˜ï¼Œé‡Šæ”¾å¯¹è±¡
 		tool.CloseExcel(true, true);
 
 
@@ -75,7 +75,7 @@ public class T1 {
         HSSFRow row = sheet.getRow(2);
         HSSFCell cell = row.getCell(2);
 
-		 System.out.println("ÖØĞÂ´ò¿ªÎÄ¼ş¶ÁÈ¡Êı¾İ£º"+String.valueOf(cell.getNumericCellValue()));
+		 System.out.println("é‡æ–°æ‰“å¼€æ–‡ä»¶è¯»å–æ•°æ®ï¼š"+String.valueOf(cell.getNumericCellValue()));
 
        }catch(Exception e){
     	   e.printStackTrace();

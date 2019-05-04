@@ -50,7 +50,7 @@ public class JacobExcelUtil {
 	}
  
 	/**
-	 * Ğ´ÈëÊı¾İ
+	 * å†™å…¥æ•°æ®
 	 * @param cells
 	 */
 	public void putData(List<ExcelCell> cells) throws Exception {
@@ -64,7 +64,7 @@ public class JacobExcelUtil {
 		Dispatch sheet = null;
 		String filename = null;
  
-		// ³õÊ¼»¯
+		// åˆå§‹åŒ–
 		ComThread.InitSTA();
 		
 		// open file
@@ -78,7 +78,7 @@ public class JacobExcelUtil {
 					"Open",
 					Dispatch.Method,
 					new Object[] { filename, new Variant(false),
-							new Variant(readonly) },	// ÊÇ·ñÒÔÖ»¶Á·½Ê½´ò¿ª
+							new Variant(readonly) },	// æ˜¯å¦ä»¥åªè¯»æ–¹å¼æ‰“å¼€
 					new int[1]).toDispatch();
 	
 			// put data
@@ -114,8 +114,8 @@ public class JacobExcelUtil {
 	}
  
 	/**
-	 * ×ª»»µ¥Ôª¸ñÎ»ÖÃ
-	 * ×î¶àÖ§³Ö26*26ÁĞ
+	 * è½¬æ¢å•å…ƒæ ¼ä½ç½®
+	 * æœ€å¤šæ”¯æŒ26*26åˆ—
 	 * @param i
 	 * @param j
 	 * @return
@@ -132,7 +132,7 @@ public class JacobExcelUtil {
 	}
  
 	/**
-	 * Ğ´ÈëÖµ
+	 * å†™å…¥å€¼
 	 * 
 	 * @param sheet
 	 * @param position
@@ -145,7 +145,7 @@ public class JacobExcelUtil {
 	}
  
 	/**
-	 * ¶ÁÈ¡Öµ
+	 * è¯»å–å€¼
 	 * 
 	 * @param sheet
 	 * @param position

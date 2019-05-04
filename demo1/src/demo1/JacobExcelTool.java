@@ -13,7 +13,7 @@ public class JacobExcelTool {
 
 		// TODO Auto-generated method stub
 		JacobExcelTool tool = new JacobExcelTool();
-		// ´ò¿ª
+		// æ‰“å¼€
 		tool.OpenExcel("D:\\wjx\\demo1\\t1.xls", false, false);
 
 		// Dispatch sheet = Dispatch.get(workbook, "Sheet1").toDispatch();
@@ -28,9 +28,9 @@ public class JacobExcelTool {
 		Dispatch sheet = Dispatch.get(workbooks, "ActiveSheet").toDispatch();
 
 		tool.setValue(sheet, "D3", "Value", 4);
-		// µ÷ÓÃExcelºê
+		// è°ƒç”¨Excelå®
 		tool.callMacro("VBATest");
-		// ¹Ø±Õ²¢±£´æ£¬ÊÍ·Å¶ÔÏó
+		// å…³é—­å¹¶ä¿å­˜ï¼Œé‡Šæ”¾å¯¹è±¡
 		tool.CloseExcel(true, true);
 
 	}
@@ -38,17 +38,17 @@ public class JacobExcelTool {
 	private static String[] ABC = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
 			"R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
 
-	private ActiveXComponent xl = null; // Excel¶ÔÏó
+	private ActiveXComponent xl = null; // Excelå¯¹è±¡
 
-	private static Dispatch workbooks = null; // ¹¤×÷²¾¶ÔÏó
+	private static Dispatch workbooks = null; // å·¥ä½œç°¿å¯¹è±¡
 
-	private Dispatch workbook = null; // ¾ßÌå¹¤×÷²¾
+	private Dispatch workbook = null; // å…·ä½“å·¥ä½œç°¿
 
 	private Dispatch sheet = null;
 
-	private Dispatch sheets = null;// »ñµÃsheets¼¯ºÏ¶ÔÏó
+	private Dispatch sheets = null;// è·å¾—sheetsé›†åˆå¯¹è±¡
 
-	private Dispatch currentSheet = null;// µ±Ç°sheet
+	private Dispatch currentSheet = null;// å½“å‰sheet
 
 	public ActiveXComponent getXl() {
 		return xl;
@@ -63,7 +63,7 @@ public class JacobExcelTool {
 	}
 
 	/**
-	 * ×ª»»µ¥Ôª¸ñÎ»ÖÃ ×î¶àÖ§³Ö26*26ÁĞ
+	 * è½¬æ¢å•å…ƒæ ¼ä½ç½® æœ€å¤šæ”¯æŒ26*26åˆ—
 	 * 
 	 * @param i
 	 * @param j
@@ -81,7 +81,7 @@ public class JacobExcelTool {
 	}
 
 	/**
-	 * ¶ÁÈ¡Öµ
+	 * è¯»å–å€¼
 	 * 
 	 * @param sheet
 	 * @param position
@@ -96,30 +96,30 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * ´ò¿ªexcelÎÄ¼ş
+	 * æ‰“å¼€excelæ–‡ä»¶
 	 * 
 	 * @param filepath
-	 *            ÎÄ¼şÂ·¾¶Ãû³Æ
+	 *            æ–‡ä»¶è·¯å¾„åç§°
 	 * @param visible
-	 *            ÊÇ·ñÏÔÊ¾´ò¿ª
+	 *            æ˜¯å¦æ˜¾ç¤ºæ‰“å¼€
 	 * @param readonly
-	 *            ÊÇ·ñÖ»¶Á·½Ê½´ò¿ª
+	 *            æ˜¯å¦åªè¯»æ–¹å¼æ‰“å¼€
 	 * 
 	 */
 
 	public void OpenExcel(String filepath, boolean visible, boolean readonly) {
 		try {
-			initComponents(); // Çå¿ÕÔ­Ê¼±äÁ¿
-			ComThread.InitSTA();// ½öÔÊĞíÍ¬Ê±ÔËĞĞÒ»¸öÏß³Ì£¬ÆäËûÏß³ÌËø×¡
-			// ComThread.InitMTA(true);//¿ÉÍ¬Ê±ÔËĞĞ¶à¸ö
+			initComponents(); // æ¸…ç©ºåŸå§‹å˜é‡
+			ComThread.InitSTA();// ä»…å…è®¸åŒæ—¶è¿è¡Œä¸€ä¸ªçº¿ç¨‹ï¼Œå…¶ä»–çº¿ç¨‹é”ä½
+			// ComThread.InitMTA(true);//å¯åŒæ—¶è¿è¡Œå¤šä¸ª
 			if (xl == null)
-				xl = new ActiveXComponent("Excel.Application"); // Excel¶ÔÏó
-			xl.setProperty("Visible", new Variant(visible));// ÉèÖÃÊÇ·ñÏÔÊ¾´ò¿ªexcel
+				xl = new ActiveXComponent("Excel.Application"); // Excelå¯¹è±¡
+			xl.setProperty("Visible", new Variant(visible));// è®¾ç½®æ˜¯å¦æ˜¾ç¤ºæ‰“å¼€excel
 			if (workbooks == null)
-				workbooks = xl.getProperty("Workbooks").toDispatch(); // ¹¤×÷²¾¶ÔÏó
-			workbook = Dispatch.invoke( // ´ò¿ª¾ßÌå¹¤×÷²¾
+				workbooks = xl.getProperty("Workbooks").toDispatch(); // å·¥ä½œç°¿å¯¹è±¡
+			workbook = Dispatch.invoke( // æ‰“å¼€å…·ä½“å·¥ä½œç°¿
 					workbooks, "Open", Dispatch.Method,
-					new Object[] { filepath, new Variant(false), new Variant(false) }, // ÊÇ·ñÒÔÖ»¶Á·½Ê½´ò¿ª
+					new Object[] { filepath, new Variant(false), new Variant(false) }, // æ˜¯å¦ä»¥åªè¯»æ–¹å¼æ‰“å¼€
 					new int[1]).toDispatch();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -129,10 +129,10 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * ¹Ø±ÕexcelÎÄµµ
+	 * å…³é—­excelæ–‡æ¡£
 	 * 
 	 * @param f
-	 *            º¬Òå²»Ã÷ £¨¹Ø±ÕÊÇ·ñ±£´æ£¿Ä¬ÈÏfalse£©
+	 *            å«ä¹‰ä¸æ˜ ï¼ˆå…³é—­æ˜¯å¦ä¿å­˜ï¼Ÿé»˜è®¤falseï¼‰
 	 */
 
 	public void CloseExcel(boolean f, boolean quitXl) {
@@ -150,7 +150,7 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * ÊÍ·Å×ÊÔ´
+	 * é‡Šæ”¾èµ„æº
 	 * 
 	 */
 	public void releaseSource() {
@@ -165,7 +165,7 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * Ìí¼ÓĞÂµÄ¹¤×÷±í(sheet)£¬£¨Ìí¼ÓºóÎªÄ¬ÈÏÎªµ±Ç°¼¤»îµÄ¹¤×÷±í£©
+	 * æ·»åŠ æ–°çš„å·¥ä½œè¡¨(sheet)ï¼Œï¼ˆæ·»åŠ åä¸ºé»˜è®¤ä¸ºå½“å‰æ¿€æ´»çš„å·¥ä½œè¡¨ï¼‰
 	 * 
 	 */
 	public Dispatch addSheet() {
@@ -174,7 +174,7 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * ĞŞ¸Äµ±Ç°¹¤×÷±íµÄÃû×Ö
+	 * ä¿®æ”¹å½“å‰å·¥ä½œè¡¨çš„åå­—
 	 * 
 	 * @param newName
 	 * 
@@ -185,7 +185,7 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * µÃµ½µ±Ç°¹¤×÷±íµÄÃû×Ö
+	 * å¾—åˆ°å½“å‰å·¥ä½œè¡¨çš„åå­—
 	 * 
 	 * @return
 	 * 
@@ -196,7 +196,7 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * µÃµ½¹¤×÷±¡µÄÃû×Ö
+	 * å¾—åˆ°å·¥ä½œè–„çš„åå­—
 	 * 
 	 * @return
 	 * 
@@ -210,7 +210,7 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * µÃµ½sheetsµÄ¼¯ºÏ¶ÔÏó
+	 * å¾—åˆ°sheetsçš„é›†åˆå¯¹è±¡
 	 * 
 	 * @return
 	 * 
@@ -223,7 +223,7 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * µÃµ½µ±Ç°sheet
+	 * å¾—åˆ°å½“å‰sheet
 	 * 
 	 * @return
 	 * 
@@ -235,7 +235,7 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * Í¨¹ı¹¤×÷±íÃû×ÖµÃµ½¹¤×÷±í
+	 * é€šè¿‡å·¥ä½œè¡¨åå­—å¾—åˆ°å·¥ä½œè¡¨
 	 * 
 	 * @param name
 	 *            sheetName
@@ -248,10 +248,10 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * Í¨¹ı¹¤×÷±íË÷ÒıµÃµ½¹¤×÷±í(µÚÒ»¸ö¹¤×÷²¾indexÎª1)
+	 * é€šè¿‡å·¥ä½œè¡¨ç´¢å¼•å¾—åˆ°å·¥ä½œè¡¨(ç¬¬ä¸€ä¸ªå·¥ä½œç°¿indexä¸º1)
 	 * 
 	 * @param index
-	 * @return sheet¶ÔÏó
+	 * @return sheetå¯¹è±¡
 	 * 
 	 */
 
@@ -261,7 +261,7 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * µÃµ½sheetµÄ×ÜÊı
+	 * å¾—åˆ°sheetçš„æ€»æ•°
 	 * 
 	 * @return
 	 * 
@@ -274,10 +274,10 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * µ÷ÓÃexcelºê
+	 * è°ƒç”¨excelå®
 	 * 
 	 * @param macroName
-	 *            ºêÃû
+	 *            å®å
 	 * 
 	 */
 	public void callMacro(String macroName) {
@@ -286,12 +286,12 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * µ÷ÓÃexcelºê
+	 * è°ƒç”¨excelå®
 	 * 
 	 * @param macroName
-	 *            ºêÃû
+	 *            å®å
 	 * @param param
-	 *            ´«µİ²ÎÊı
+	 *            ä¼ é€’å‚æ•°
 	 */
 	public void callMacro(String macroName, Object param) {
 		Dispatch.call(xl, "Run", new Variant(macroName), new Variant(param));
@@ -299,14 +299,14 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * µ¥Ôª¸ñĞ´ÈëÖµ
+	 * å•å…ƒæ ¼å†™å…¥å€¼
 	 * 
 	 * @param sheet
-	 *            ±»²Ù×÷µÄsheet
+	 *            è¢«æ“ä½œçš„sheet
 	 * @param position
-	 *            µ¥Ôª¸ñÎ»ÖÃ£¬Èç£ºC1
+	 *            å•å…ƒæ ¼ä½ç½®ï¼Œå¦‚ï¼šC1
 	 * @param type
-	 *            ÖµµÄÊôĞÔ Èç£ºvalue
+	 *            å€¼çš„å±æ€§ å¦‚ï¼švalue
 	 * @param value
 	 * 
 	 */
@@ -318,7 +318,7 @@ public class JacobExcelTool {
 	}
 
 	/**
-	 * Ğ´ÈëÖµ
+	 * å†™å…¥å€¼
 	 * 
 	 * @param sheet
 	 * @param position
@@ -331,7 +331,7 @@ public class JacobExcelTool {
 	}
 
 	/**
-	 * Ğ´ÈëÊı¾İ
+	 * å†™å…¥æ•°æ®
 	 * 
 	 * @param cells
 	 */
@@ -346,7 +346,7 @@ public class JacobExcelTool {
 		Dispatch sheet = null;
 		String filename = null;
 
-		// ³õÊ¼»¯
+		// åˆå§‹åŒ–
 		ComThread.InitSTA();
 
 		// open file
@@ -360,7 +360,7 @@ public class JacobExcelTool {
 			// "Open",
 			// Dispatch.Method,
 			// new Object[] { filename, new Variant(false),
-			// new Variant(readonly) }, // ÊÇ·ñÒÔÖ»¶Á·½Ê½´ò¿ª
+			// new Variant(readonly) }, // æ˜¯å¦ä»¥åªè¯»æ–¹å¼æ‰“å¼€
 			// new int[1]).toDispatch();
 			//
 			// // put data
@@ -393,10 +393,10 @@ public class JacobExcelTool {
 
 	/**
 	 * 
-	 * µ¥Ôª¸ñ¶ÁÈ¡Öµ
+	 * å•å…ƒæ ¼è¯»å–å€¼
 	 * 
 	 * @param position
-	 *            µ¥Ôª¸ñÎ»ÖÃ£¬Èç£º C1
+	 *            å•å…ƒæ ¼ä½ç½®ï¼Œå¦‚ï¼š C1
 	 * @param sheet
 	 * @return
 	 * 
@@ -415,13 +415,13 @@ public class JacobExcelTool {
 		sheets = null;
 	}
 
-	// ===========EXCEL Áí´æÎÄ¼şÎªÆäËû¸ñÊ½ =========
+	// ===========EXCEL å¦å­˜æ–‡ä»¶ä¸ºå…¶ä»–æ ¼å¼ =========
 	/**
 	 * 
-	 * ¹¤×÷²¾Áí´æÎª
+	 * å·¥ä½œç°¿å¦å­˜ä¸º
 	 * 
 	 * @param filePath
-	 *            Áí´æÎªµÄÂ·¾¶
+	 *            å¦å­˜ä¸ºçš„è·¯å¾„
 	 * 
 	 */
 	public void SaveAs(String filePath) {
@@ -429,13 +429,13 @@ public class JacobExcelTool {
 	}
 
 	/**
-	 * Áí´æÎªpdf
+	 * å¦å­˜ä¸ºpdf
 	 */
 	public void excelToPDF() {
 		Dispatch sheet = Dispatch.invoke(sheets, "Item", Dispatch.Get, new Object[] { new Integer(1) }, new int[1])
 				.toDispatch();
 		// String sheetname = Dispatch.get(sheet, "name").toString();
-		Dispatch.call(sheet, "Activate");// Ö¸¶¨»î¶¯sheet
+		Dispatch.call(sheet, "Activate");// æŒ‡å®šæ´»åŠ¨sheet
 		Dispatch.call(sheet, "Select");
 		int excelToPdf = 57;
 		//
@@ -447,13 +447,13 @@ public class JacobExcelTool {
 		Dispatch.call(excel, "Close", new Variant(false));
 	}
 
-	//EXCEL×ªPDF
+	//EXCELè½¬PDF
 	public static String xlsToPdf(String inFilePath,String outFilePath){
 		ComThread.InitSTA(true);
 		ActiveXComponent ax=new ActiveXComponent("Excel.Application");
 		try{
 			ax.setProperty("Visible", new Variant(false));
-			ax.setProperty("AutomationSecurity", new Variant(3)); //½ûÓÃºê
+			ax.setProperty("AutomationSecurity", new Variant(3)); //ç¦ç”¨å®
 			Dispatch excels=ax.getProperty("Workbooks").toDispatch();
 	 
 			Dispatch excel=Dispatch.invoke(excels,"Open",Dispatch.Method,new Object[]{
@@ -462,14 +462,14 @@ public class JacobExcelTool {
 				new Variant(false)
 			},
 			new int[9]).toDispatch();
-			//×ª»»¸ñÊ½
+			//è½¬æ¢æ ¼å¼
 			Dispatch.invoke(excel,"ExportAsFixedFormat",Dispatch.Method,new Object[]{
-				new Variant(0), //PDF¸ñÊ½=0
+				new Variant(0), //PDFæ ¼å¼=0
 				outFilePath,
-				new Variant(0)  //0=±ê×¼ (Éú³ÉµÄPDFÍ¼Æ¬²»»á±äÄ£ºı) 1=×îĞ¡ÎÄ¼ş (Éú³ÉµÄPDFÍ¼Æ¬ºıµÄÒ»ËúºıÍ¿)
+				new Variant(0)  //0=æ ‡å‡† (ç”Ÿæˆçš„PDFå›¾ç‰‡ä¸ä¼šå˜æ¨¡ç³Š) 1=æœ€å°æ–‡ä»¶ (ç”Ÿæˆçš„PDFå›¾ç‰‡ç³Šçš„ä¸€å¡Œç³Šæ¶‚)
 			},new int[1]);
 	 
-			//ÕâÀï·ÅÆúÊ¹ÓÃSaveAs
+			//è¿™é‡Œæ”¾å¼ƒä½¿ç”¨SaveAs
 			/*Dispatch.invoke(excel,"SaveAs",Dispatch.Method,new Object[]{
 				outFile,
 				new Variant(57),
@@ -502,20 +502,20 @@ public class JacobExcelTool {
 	// public static final int WORD_TXT = 7;
 	public static final int EXCEL_HTML = 44;
 	public static final int EXCEL_XML = 46;
-	public static final int EXCEL_43 = 43; // Excel 2003 ²âÊÔ¿ÉÓÃ
+	public static final int EXCEL_43 = 43; // Excel 2003 æµ‹è¯•å¯ç”¨
 
 	/**
-	 * EXCEL×ªHTML
+	 * EXCELè½¬HTML
 	 * 
 	 * @param xlsfile
-	 *            EXCELÎÄ¼şÈ«Â·¾¶
+	 *            EXCELæ–‡ä»¶å…¨è·¯å¾„
 	 * @param htmlfile
-	 *            ×ª»»ºóHTML´æ·ÅÂ·¾¶
+	 *            è½¬æ¢åHTMLå­˜æ”¾è·¯å¾„
 	 */
 	public static void excelToHtml(String xlsfile, String htmlfile) {
-		// ³õÊ¼»¯
+		// åˆå§‹åŒ–
 		ComThread.InitSTA();
-		ActiveXComponent app = new ActiveXComponent("Excel.Application"); // Æô¶¯Excel
+		ActiveXComponent app = new ActiveXComponent("Excel.Application"); // å¯åŠ¨Excel
 		try {
 			app.setProperty("Visible", new Variant(false));
 			Dispatch excels = app.getProperty("Workbooks").toDispatch();
@@ -533,17 +533,17 @@ public class JacobExcelTool {
 	}
 
 	/**
-	 * EXCEL×ªXML
+	 * EXCELè½¬XML
 	 * 
 	 * @param xlsfile
-	 *            EXCELÎÄ¼şÈ«Â·¾¶
+	 *            EXCELæ–‡ä»¶å…¨è·¯å¾„
 	 * @param xmlfile
-	 *            ×ª»»ºóXML´æ·ÅÂ·¾¶
+	 *            è½¬æ¢åXMLå­˜æ”¾è·¯å¾„
 	 */
 	public static void excelToXml(String xlsfile, String xmlfile) {
-		// ³õÊ¼»¯
+		// åˆå§‹åŒ–
 		ComThread.InitSTA();
-		ActiveXComponent app = new ActiveXComponent("Excel.Application"); // Æô¶¯Excel
+		ActiveXComponent app = new ActiveXComponent("Excel.Application"); // å¯åŠ¨Excel
 		try {
 			app.setProperty("Visible", new Variant(false));
 			Dispatch excels = app.getProperty("Workbooks").toDispatch();

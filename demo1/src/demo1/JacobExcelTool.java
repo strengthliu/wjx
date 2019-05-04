@@ -106,6 +106,7 @@ public class JacobExcelTool {
 	 *            是否只读方式打开
 	 * 
 	 */
+	
 	public void OpenExcel(String filepath, boolean visible, boolean readonly) {
 		try {
 			initComponents(); // 清空原始变量

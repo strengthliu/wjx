@@ -18,7 +18,7 @@ public class JacobExcelUtil {
 	
 	public static void main(String[] args) {
 		try {
-			JacobExcelUtil util = new JacobExcelUtil("D:\\wjx\\demo1\\t1.xls");
+			JacobExcelUtil util = new JacobExcelUtil("D:\\Work\\项目\\wjx\\demo1\\t1.xls");
 			ExcelCell cell = new ExcelCell();
 			cell.setRow(4);
 			cell.setCol(3);
@@ -71,14 +71,17 @@ public class JacobExcelUtil {
 		try {
 			filename = file;
 			excel = new ActiveXComponent("Excel.Application");
-			excel.setProperty("Visible", new Variant(false));
+			excel.setProperty("Visible", new Variant(true));
+			excel.setProperty("AutomationSecurity", new Variant(1));
 			workbooks = excel.getProperty("Workbooks").toDispatch();
 			workbook = Dispatch.invoke(
 					workbooks,
 					"Open",
 					Dispatch.Method,
 					new Object[] { filename, new Variant(false),
-							new Variant(readonly) },	// 是否以只读方式打开
+							
+							new Variant(readonly)// 是否以只读方式打开
+							},	
 					new int[1]).toDispatch();
 	
 			// put data
@@ -97,6 +100,7 @@ public class JacobExcelUtil {
 				position = translateLocation(c.getRow(), c.getCol());
 				setValue(sheet, position, c.getValue());
 			}
+			Thread.sleep(5000);
 			position = translateLocation(3,3);
 			String v = getValue(sheet,position);
 			System.out.println(v);

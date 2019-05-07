@@ -5,3 +5,5 @@ project/.classpath
 project/.project
 project/target/
 Servers/
+.recommenders/
+*.pdf

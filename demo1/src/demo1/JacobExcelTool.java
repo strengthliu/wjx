@@ -160,6 +160,7 @@ public class JacobExcelTool  implements Runnable{
 		t2.file="C:\\proj\\wjx-master\\demo1\\t2.xls";
 		t2.name="t2";
 		t1.start();
+		
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {

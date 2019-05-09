@@ -14,7 +14,7 @@ import com.jacob.com.ComThread;
 import com.jacob.com.Dispatch;
 import com.jacob.com.Variant;
 
-public class JacobExcelTool {
+public class JacobExcelTool  implements Runnable{
 
 	private static String[] ABC = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q",
 			"R", "S", "T", "U", "V", "W", "X", "Y", "Z" };
@@ -28,6 +28,7 @@ public class JacobExcelTool {
 	public static final int excelToPdf = 57;
 	public static final int WORD_HTML = 8;
 	public static final int WORD_TXT = 7;
+
 
 	/**
 	 * EXCEL转HTML
@@ -95,7 +96,7 @@ public class JacobExcelTool {
 		curt = System.currentTimeMillis();
 	}
 
-	public void run() {
+	public void run1() {
 		ExecutorService executor = Executors.newCachedThreadPool();
 
 		FutureTask<String> future = new FutureTask<String>(new Callable<String>() {
@@ -135,14 +136,43 @@ public class JacobExcelTool {
 		}
 	}
 
+	public String name;
+	public String file;
+	private Thread t;
+	public void run() {
+		OpenExcel(file, false, false);
+	}
+	   public void start () {
+		      System.out.println("Starting " +  name );
+		      if (t == null) {
+		         t = new Thread (this, name);
+		         t.start ();
+		      }
+		   }
 	public static void main(String[] args) {
 
 		JacobExcelTool.time("begin");
 		// 耗时：2169
+		JacobExcelTool t1 = new JacobExcelTool();
+		t1.file="C:\\proj\\wjx-master\\demo1\\t1.xls";
+		t1.name="t1";
+		JacobExcelTool t2 = new JacobExcelTool();
+		t2.file="C:\\proj\\wjx-master\\demo1\\t2.xls";
+		t2.name="t2";
+		t1.start();
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		t2.start();
+		
 		JacobExcelTool tool = new JacobExcelTool();
 		// 打开
 		JacobExcelTool.time("1");
-		tool.OpenExcel("D:\\Work\\项目\\wjx\\demo1\\t1.xls", false, false);
+		tool.OpenExcel("C:\\proj\\wjx-master\\demo1\\t1.xls", false, false);
+//		tool.OpenExcel2("C:\\proj\\wjx-master\\demo1\\t2.xls", false, false);
 
 		String position = tool.translateLocation(4, 3);
 		time("9");
@@ -150,7 +180,7 @@ public class JacobExcelTool {
 		tool.setValue(position, 8.00);
 		time("10");
 		// 耗时：474
-		tool.toPDF("D:\\Work\\项目\\wjx\\demo1\\t1.pdf");
+		tool.toPDF("C:\\proj\\wjx-master\\demo1\\t1.pdf");
 		time("11");
 
 		// tool.getSheetByName("Sheet1");
@@ -169,7 +199,7 @@ public class JacobExcelTool {
 		tool.callMacro("Auto_Open");
 		time("12");
 		// 耗时：337
-		tool.toPDF("D:\\Work\\项目\\wjx\\demo1\\t2.pdf");
+		tool.toPDF("C:\\proj\\wjx-master\\demo1\\t2.pdf");
 		time("13");
 
 		// try {
@@ -231,17 +261,20 @@ public class JacobExcelTool {
 	}
 
 	private ActiveXComponent xl = null; // Excel对象
+	private ActiveXComponent x2 = null; // Excel对象
 
 	/**
 	 * 一个Excel进程所控制的所有workbook实例。 是否workbooks是一个进程空间的？ 验证：
 	 * 两个JacobExcelTool实例，各打开一个Excel， 查询workbooks的workbook数，并访问其中的表， 看数据是否是同一个。
 	 */
 	private Dispatch workbooks = null; //
+	private Dispatch workbooks2 = null; //
 
 	/**
 	 * 工作簿对象，每一个excel表一个对象。
 	 */
 	private Dispatch workbook = null; // 具体工作簿
+	private Dispatch workbook2 = null; // 具体工作簿
 
 	private Dispatch sheet = null;
 
@@ -251,17 +284,23 @@ public class JacobExcelTool {
 
 	public JacobExcelTool() {
 		initComponents(); // 清空原始变量
-		// ComThread.InitSTA();// 仅允许同时运行一个线程，其他线程锁住
+//		 ComThread.InitSTA();// 仅允许同时运行一个线程，其他线程锁住
 		ComThread.InitMTA(true);// 可同时运行多个，可能有问题.
 
 		if (xl == null)
 			xl = new ActiveXComponent("Excel.Application"); // Excel对象
+		if (x2 == null)
+			x2 = new ActiveXComponent("Excel.Application"); // Excel对象
 
 		xl.setProperty("Visible", new Variant(false));// 设置是否显示打开excel
-		xl.setProperty("AutomationSecurity", new Variant(2)); // 设置宏运行权限（1-3）：3为不可用，2可用.
+		xl.setProperty("AutomationSecurity", new Variant(1)); // 设置宏运行权限（1-3）：3为不可用，1可用.
+		x2.setProperty("Visible", new Variant(false));// 设置是否显示打开excel
+		x2.setProperty("AutomationSecurity", new Variant(1)); // 设置宏运行权限（1-3）：3为不可用，1可用.
 
 		if (workbooks == null)
 			workbooks = xl.getProperty("Workbooks").toDispatch(); // 工作簿对象
+		if (workbooks2 == null)
+			workbooks2 = x2.getProperty("Workbooks").toDispatch(); // 工作簿对象
 	}
 
 	/**
@@ -493,6 +532,16 @@ public class JacobExcelTool {
 		int count = Dispatch.get(getSheets(), "count").toInt();
 		return count;
 	}
+	
+	public long getWorkBookCount() {
+		long count = Dispatch.get(workbooks, "count").toInt();
+		return count;
+	}
+//	public Dispatch getWorkBooks() {
+//		if (sheets == null)
+//			sheets = Dispatch.get(workbooks, "sheets").toDispatch();
+//		return sheets;
+//	}
 
 	/**
 	 * 
@@ -624,6 +673,8 @@ public class JacobExcelTool {
 					new Object[] { filepath, new Variant(visible), new Variant(readonly) }, // 是否以只读方式打开
 					new int[1]).toDispatch();
 			time("2");
+			Thread.sleep(2000);
+			System.out.println("现在有工作薄数量："+getWorkBookCount());
 			// // put data
 			sheet = Dispatch.get(workbook, "ActiveSheet").toDispatch();
 			String position = null;
@@ -642,6 +693,66 @@ public class JacobExcelTool {
 			e.printStackTrace();
 			releaseSource();
 		}
+	}
+	public void OpenExcel2(String filepath, boolean visible, boolean readonly) {
+		try {
+			// 耗时：336
+			workbook2 = Dispatch.invoke( // 打开具体工作簿
+					workbooks2, "Open", Dispatch.Method,
+					new Object[] { filepath, new Variant(visible), new Variant(readonly) }, // 是否以只读方式打开
+					new int[1]).toDispatch();
+			Thread.sleep(2000);
+//			time("2");
+			// // put data
+//			sheet = Dispatch.get(workbook, "ActiveSheet").toDispatch();
+//			String position = null;
+//
+//			position = translateLocation(2, 3);
+//			String v = getValue(sheet, position);
+//			// System.out.println("openExcel: "+v);
+//			// Dispatch.get(workbook, "Names");
+//			Variant names = Dispatch.get(workbook, "Names");
+//			System.out.println(names.toString());
+//			System.out.println(getWorkbookName());
+//			List l = findSheetName();
+//			for (int i = 0; i < l.size(); i++)
+//				System.out.println(l.get(i));
+		} catch (Exception e) {
+			e.printStackTrace();
+			releaseSource();
+		}
+	}
+
+	/**
+	 * 
+	 * 打开excel文件
+	 * 
+	 * @param workbooks
+	 *            工作薄
+	 * @param filepath
+	 *            文件路径名称
+	 * @param visible
+	 *            是否显示打开
+	 * @param readonly
+	 *            是否只读方式打开
+	 * 
+	 */
+
+	public Dispatch OpenExcel(Dispatch workbooks, String filepath, boolean visible, boolean readonly)  throws Exception{
+		try {
+			// 耗时：336
+			Dispatch workbook = Dispatch.invoke( // 打开具体工作簿
+					workbooks, "Open", Dispatch.Method,
+					new Object[] { filepath, new Variant(visible), new Variant(readonly) }, // 是否以只读方式打开
+					new int[1]).toDispatch();
+			return workbook;
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: 修改释放资源方法，下面这个没有参数，不能释放相应的workbooks。
+			releaseSource();
+			throw new Exception("打开Excel表文件出错。文件名："+filepath+".");
+		}
+//		return null;
 	}
 
 	/**
@@ -904,6 +1015,17 @@ public class JacobExcelTool {
 		}
 
 		return loc;
+	}
+
+	/**
+	 * 根据参数，执行Excel表宏，再将所有sheet另存为mode所标示的文件格式。
+	 * @param params
+	 * @param mode 
+	 * @return
+	 */
+	public List<String> report(Object[] params, int mode) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

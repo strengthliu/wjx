@@ -27,7 +27,13 @@ public class CacheItem implements CacheAble {
         this.entity = obj;  
         this.expireTime = expires;  
     }  
-      
+    public CacheItem() {
+    		super();
+		long expires = 30*60*1000;
+        this.entity = this;  
+        this.expireTime = expires;  
+    	
+    }
     // 判断缓存是否超时  
     public boolean isExpired() {  
         return (expireTime != -1 && new Date().getTime() - createTime.getTime() > expireTime);  
@@ -42,6 +48,8 @@ public class CacheItem implements CacheAble {
     }  
   
     public Object getEntity() {  
+	    	ExcelFile f = (ExcelFile)entity;
+	    	f.lock();
         return entity;  
     }  
   

@@ -164,7 +164,6 @@ public class JacobExcelTool  implements Runnable{
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		t2.start();
@@ -206,7 +205,6 @@ public class JacobExcelTool  implements Runnable{
 		// try {
 		// Thread.sleep(5000);
 		// } catch (InterruptedException e) {
-		// // TODO Auto-generated catch block
 		// e.printStackTrace();
 		// }
 		// 关闭并保存，释放对象
@@ -959,7 +957,6 @@ public class JacobExcelTool  implements Runnable{
 	}
 
 	void setValue(String position, Object d) {
-		// TODO Auto-generated method stub
 		// put data
 		sheet = Dispatch.get(workbook, "ActiveSheet").toDispatch();
 		String position1 = translateLocation(3, 3);
@@ -974,7 +971,6 @@ public class JacobExcelTool  implements Runnable{
 	}
 
 	void toPDF(String string) {
-		// TODO Auto-generated method stub
 		// 转换格式
 		Dispatch.invoke(sheet, "ExportAsFixedFormat", Dispatch.Method, new Object[] { new Variant(0), // PDF格式=0
 				string, new Variant(0) // 0=标准 (生成的PDF图片不会变模糊)
@@ -1018,15 +1014,5 @@ public class JacobExcelTool  implements Runnable{
 		return loc;
 	}
 
-	/**
-	 * 根据参数，执行Excel表宏，再将所有sheet另存为mode所标示的文件格式。
-	 * @param params
-	 * @param mode 
-	 * @return
-	 */
-	public List<String> report(Object[] params, int mode) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

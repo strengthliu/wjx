@@ -51,7 +51,6 @@ public class T1 {
         //写入文件，未关闭
 		wb.write(fileOut);
 		
-		// TODO Auto-generated method stub
 		JacobExcelTool tool = new JacobExcelTool();
 		//打开
 		tool.OpenExcel("D:\\wjx\\demo1\\t1.xls",true,false);
